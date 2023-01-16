@@ -23,3 +23,14 @@ jobs:
         port: ${{ secrets.PORT }}
         source: "index.html"
         target: "/home/ubuntu/"
+    - name: executing remote ssh commands to cp files
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.KEY }}
+            port: ${{ secrets.PORT }}
+            script: |
+               sudo cp -R /home/ubuntu/index.html /var/www/html/
+               sudo chown -R www-data:www-data /var/www/html/index.html
+               sudo systemctl restart apache2.service
